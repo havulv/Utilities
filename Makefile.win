@@ -1,0 +1,13 @@
+SRC=lib/
+TEST=tests/
+
+CC=cl
+CFLAGS=-W2
+INC=-I
+
+LNK=$(INC) $(SRC)
+DEPS=$(SRC)utils.c
+
+tests.exe:
+	$(CC) $(TEST)util_testing.c $(DEPS) $(CFLAGS) $(LNK)
+
