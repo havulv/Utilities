@@ -25,10 +25,10 @@
 
 #else
 
-#define RED(a)         printf("\x1b[31m" a "\x1b[31m");
-#define GREEN(a)         printf("\x1b[32m" a "\x1b[32m");
-#define BLUE(a)         printf("\x1b[34m" a "\x1b[34m");
-#define INTENSE(a)         printf("\x1b[21m" a "\x1b[21m");
+#define RED(a)         printf("\x1b[31m%s\x1b[31m", a);
+#define GREEN(a)         printf("\x1b[32m%s\x1b[32m", a);
+#define BLUE(a)         printf("\x1b[34m%s\x1b[34m", a);
+#define INTENSE(a)         printf("\x1b[21m%s\x1b[21m", a);
 
 #endif
 
@@ -143,7 +143,7 @@ extern int hex_check(char *expec, char *actual, size_t exsize) {
             printf("| ");
             for (int n = 0; n < 8; n++) {
                 if (n < i % 8 + 1) {
-                    char tmpout[3] = {expectmp[n], "\0"};
+                    char tmpout[3] = {expectmp[n], '\0'};
                     if (expectmp[n] != actuatmp[n]) {
                         RED(tmpout);
                         correct = 0;
