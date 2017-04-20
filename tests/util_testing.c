@@ -1,6 +1,7 @@
 
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <stdint.h>
 #include "utils.h"
 
@@ -24,7 +25,7 @@ int main(void) {
         packed[hsize+2+j] = data[j];
     }
     hex_dump(packed, 2 + hsize + dsize);
-    puts("");
+    printf("\n");
     pointer_dump(packed, 2 + hsize + dsize);
 
     /* Create a bad value for checking on hex_check
@@ -38,7 +39,7 @@ int main(void) {
     bad_packed[dsize+2] = (unsigned char) 0x7e;
     bad_packed[9] = (unsigned char) 0x29;
     puts("");
-    int test = hex_check(packed, bad_packed, 2 + hsize + dsize);
+    int test = hex_check(packed, (char *) bad_packed, 2 + hsize + dsize);
     puts("");
     if (!test) {
         puts("Failed");
