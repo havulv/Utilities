@@ -20,7 +20,7 @@
 
 #define RED(string) { COLOR(string, FOREGROUND_RED) }
 #define BLUE(string) { COLOR(string, FOREGROUND_BLUE) }
-#define GREEN(string) { COLOR(string, FOREGROUND_GREEN) }
+#define GREEN(string) { COLOR(string, 0x2) }
 #define INTENSE(string) { COLOR(string, FOREGROUND_INTENSITY) }
 
 #else
@@ -158,7 +158,7 @@ extern int hex_check(char *expec, char *actual, size_t exsize) {
 
             for (int n = 0; n < i % 8 + 1; n++) {
                 if (n < i % 8 + 1) {
-                    char tmpout[3] = {actuatmp[n], "\0"};
+                    char tmpout[3] = {actuatmp[n], '\0'};
                     if (expectmp[n] != actuatmp[n]) {
                         RED(tmpout);
                         correct = 0;
