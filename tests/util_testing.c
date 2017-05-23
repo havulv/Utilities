@@ -27,6 +27,8 @@ int main(void) {
     hex_dump(packed, 2 + hsize + dsize);
     printf("\n");
     pointer_dump(packed, 2 + hsize + dsize);
+    printf("\n");
+    r_pointer_dump(packed, 2 + hsize + dsize);
 
     /* Create a bad value for checking on hex_check
      * Should give two reds on the bad packed stuff */

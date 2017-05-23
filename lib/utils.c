@@ -33,11 +33,10 @@
 #endif
 
 /* Assumes that dest has enough space, use with care */
-static char *datacat(char *dest, char *src, size_t dsize) {
+static void datacat(char *dest, char *src, size_t dsize) {
     for (int i = 0; i < dsize; i++) {
         dest[i] = src[i];
     }
-    return dest;
 }
 
 extern void pointer_dump(char *data, size_t dsize) {
@@ -72,36 +71,50 @@ extern void pointer_dump(char *data, size_t dsize) {
     }
 }
 
+static void reverse(char *data, size_t dsize) {
+    for (int i =0; i < dsize/2; i++) {
+        char tmp = data[i];
+        data[i] = data[dsize-i-1];
+        data[dsize-i-1] = tmp;
+    }
+}
 
 extern void r_pointer_dump(char *data, size_t dsize) {
     int i = dsize-1;
-    while (i > 0) {
+    while (i >= 0) {
+        if (dsize == i+1) {
+            int k = i;
+            while (k % 8 < 7) {
+                printf("00 ------ | ");
+                k += 1;
+            }
+        }
         printf("%02x %llx | ", 
             (unsigned char) *(data+i), (unsigned long long) (data+i));
-        if (i % 8 == 7 || i+1 == dsize) {
+        if (i % 8 == 0) {
             char tmp[9];
-
-            if (i+1 == dsize) {
-                int k = i;
-                while (k % 8 < 7) {
-                    printf("00 ------ | ");
-                    k += 1;
+        
+            if (8 > dsize - i ) {
+                datacat(tmp, data+i, (dsize - i) % 8 );
+                for (int m = 0; m < 8; m++) {
+                    if (m < (dsize - i) % 8) {
+                        tmp[m] =  tmp[m] < 0x20 || tmp[m] == 0x7f? 0x2e: tmp[m];
+                    } else {
+                        tmp[m] = 0x20;
+                    }
                 }
-            }
-
-            datacat(tmp, data+i-(i % 8), (i % 8)+1);
-            tmp[8] = '\0';
-            for (int m = 0; m < 8; m++) {
-                if (m < i % 8 + 1) {
+            } else {
+                datacat(tmp, data+i, 8);
+                for (int m = 0; m < 8; m++) {
                     tmp[m] =  tmp[m] < 0x20 || tmp[m] == 0x7f? 0x2e: tmp[m];
-                } else {
-                    tmp[m] = 0x29;
                 }
             }
+            reverse(tmp, 8);
+            tmp[8] = '\0';
             
             printf("|  %s\n", tmp);
         }
-        i++;
+        i--;
     }   
 }
 
