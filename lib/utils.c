@@ -62,7 +62,7 @@ extern void pointer_dump(char *data, size_t dsize) {
                 if (m < i % 8 + 1) {
                     tmp[m] =  tmp[m] < 0x20 || tmp[m] == 0x7f? 0x2e: tmp[m];
                 } else {
-                    tmp[m] = 0x00;
+                    tmp[m] = 0x20;
                 }
             }
             
@@ -70,6 +70,39 @@ extern void pointer_dump(char *data, size_t dsize) {
         }
         i++;
     }
+}
+
+
+extern void r_pointer_dump(char *data, size_t dsize) {
+    int i = dsize-1;
+    while (i > 0) {
+        printf("%02x %llx | ", 
+            (unsigned char) *(data+i), (unsigned long long) (data+i));
+        if (i % 8 == 7 || i+1 == dsize) {
+            char tmp[9];
+
+            if (i+1 == dsize) {
+                int k = i;
+                while (k % 8 < 7) {
+                    printf("00 ------ | ");
+                    k += 1;
+                }
+            }
+
+            datacat(tmp, data+i-(i % 8), (i % 8)+1);
+            tmp[8] = '\0';
+            for (int m = 0; m < 8; m++) {
+                if (m < i % 8 + 1) {
+                    tmp[m] =  tmp[m] < 0x20 || tmp[m] == 0x7f? 0x2e: tmp[m];
+                } else {
+                    tmp[m] = 0x29;
+                }
+            }
+            
+            printf("|  %s\n", tmp);
+        }
+        i++;
+    }   
 }
 
 extern void hex_dump(char *data, size_t dsize) {
